@@ -75,6 +75,22 @@ class DWConv(Conv):
     def __init__(self, c1, c2, k=1, s=1, d=1, act=True):  # ch_in, ch_out, kernel, stride, dilation, activation
         super().__init__(c1, c2, k, s, g=math.gcd(c1, c2), d=d, act=act)
 
+class DSConv(nn.Module):
+    default_act = nn.ReLU()  # default activation
+    def __init__(self, c1, c2, k=3, s=1, d=1, act=True):
+        super().__init__()
+        self.depthwise = nn.Conv2d(c1, c1, kernel_size=3, dilation=d, padding=1, groups=c1)
+        self.pointwise = nn.Conv2d(c1, c2, kernel_size=1, dilation=d)
+        self.bn = nn.BatchNorm2d(c2)
+        self.act = nn.Hardswish()
+
+    def forward(self, x):
+        out = self.depthwise(x)
+        out = self.pointwise(out)
+        return self.act(self.bn(out))
+
+    def forward_fuse(self, x):
+        return self.act(out)
 
 class DWConvTranspose2d(nn.ConvTranspose2d):
     # Depth-wise transpose convolution
