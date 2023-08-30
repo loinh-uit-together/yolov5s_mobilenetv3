@@ -1,6 +1,6 @@
-train: /home/loinh/TEST1/visdrone/images/train/
-val: /home/loinh/TEST1/visdrone/images/val/
-test: /home/loinh/TEST1/visdrone/images/test/
+train: ../visdrone/images/train/
+val: ../visdrone/images/val/
+test: ../visdrone/images/test/
 
 nc: 10
 names: ['pedestrian', 'people', 'bicycle', 'car', 'van', 'truck', 'tricycle', 'awning-tricycle', 'bus', 'motor']  # class names
